@@ -42,6 +42,44 @@ class Quiz extends Component {
       this.setState({currentQ,nextQ,previousQ,answer})
     }
   };
+  handleOptClick = (e) => {
+    if (e.target.innerHTML.toLowerCase() === this.state.answer.toLowerCase()) {
+      this.correctAnswer();
+    } else {
+      this.wrongAnswer();
+    }
+  }
+  correctAnswer = () => {
+    alert('is correct!');
+    this.setState(prevState => ({
+      score: prevState.score + 1,
+      correctAnswers: prevState.correctAnswers + 1,
+      currentQIndex: prevState.currentQIndex + 1,
+      numberOfAnsweredQ: prevState.numberOfAnsweredQ + 1
+    }), () => {
+      if (this.state.nextQ === undefined) {
+        console.log('ended')
+      } else {
+        this.showquiz(this.state.quiz, this.state.currentQ, this.state.nextQ, this.state.previousQ);
+      }
+    });
+  }
+
+  wrongAnswer = () => {
+    alert('wroooong');
+    this.setState(prevState => ({
+      wrongAnswers: prevState.wrongAnswers + 1,
+      currentQIndex: prevState.currentQIndex + 1,
+      numberOfAnsweredQ: prevState.numberOfAnsweredQ + 1
+    }), () => {
+      if (this.state.nextQ === undefined) {
+        console.log('ended')
+      } else {
+        this.showquiz(this.state.quiz, this.state.currentQ, this.state.nextQ, this.state.previousQ);
+      }
+    });
+  }
+
   render() {
     console.log(quiz)
     const {
@@ -66,11 +104,11 @@ class Quiz extends Component {
                   <p>50/50</p>
                   <p>+10 sec</p>
                   <div>
-                    <p>{currentQ.quiz}</p>
-                    <button>{currentQ.option1}</button>
-                    <button>{currentQ.option2}</button>
-                    <button>{currentQ.option3}</button>
-                    <button>{currentQ.option3}</button>
+                    <p>{currentQ.question}</p>
+                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option1}</button>
+                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option2}</button>
+                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option3}</button>
+                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option3}</button>
                   </div>
                 <div>
                   <Button id="previous">
