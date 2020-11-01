@@ -11,13 +11,47 @@ class Quiz extends Component {
         currentQ: {},
         nextQ: {},
         previousQ: {},
-        numberofQ: 0,
-        numberofAnsweredQ: 0,
+        numberOfQ: 0,
+        numberOfAnsweredQ: 0,
+        currentQIndex: 0,
         score: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        hints: 5,
+        fiftyFifty: 1,
+        usedFiftyFifty: false,
+        nextButtonDisabled: false,
+        previousButtonDisabled: true,
+        previousRandomNumbers: [],
+        time: {}
     }
   }
+  componentDidMount () {
+    const {quiz, currentQ, nextQ, previousQ} = this.state;
+    this.showquiz(quiz, currentQ, nextQ, previousQ);
+  }
+  showquiz = (quiz = this.state.quiz, currentQ, nextQ, previousQ) => {
+    let {currentQIndex} = this.state;
+
+    if (this.state.quiz !== null) {
+      quiz = this.state.quiz;
+      currentQ = quiz[currentQIndex];
+      nextQ = quiz[currentQIndex +1];
+      previousQ = quiz[currentQIndex -1];
+      const answer = currentQ.answer;
+      this.setState({currentQ,nextQ,previousQ,answer})
+    }
+  };
   render() {
     console.log(quiz)
+    const {
+      currentQ,
+      fiftyFifty,
+      hints,
+      numberOfQ,
+      currentQIndex,
+      time
+    } = this.state;
     return(
     <>
       <Container>
@@ -32,11 +66,11 @@ class Quiz extends Component {
                   <p>50/50</p>
                   <p>+10 sec</p>
                   <div>
-                    <p>The question</p>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>4</button>
+                    <p>{currentQ.quiz}</p>
+                    <button>{currentQ.option1}</button>
+                    <button>{currentQ.option2}</button>
+                    <button>{currentQ.option3}</button>
+                    <button>{currentQ.option3}</button>
                   </div>
                 <div>
                   <Button id="previous">
