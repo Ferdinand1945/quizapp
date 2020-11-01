@@ -1,3 +1,5 @@
+body {background-color: #e1e1e1!important;}
+
 .App {
   text-align: center;
 }
@@ -27,7 +29,15 @@
 .App-link {
   color: #61dafb;
 }
+.green{background-color: #6E995B!important;}
+.red {background-color: #ff6961!important;}
 
+.circle {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  background-color: #ff6961;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

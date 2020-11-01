@@ -87,14 +87,5 @@
     "option3": "Leonardo Da Vinci",
     "option4": "Albert Einstein",
     "answer": "Leonardo Da Vinci"
-  },
-
-  {
-    "question": "What’s the most important book in the Moslem religion?",
-    "option1": "The Koran",
-    "option2": "The Dictionary",
-    "option3": "The Bible",
-    "option4": "The Chemistry text Book",
-    "answer": "The Koran"
   }
 ]
