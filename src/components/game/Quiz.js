@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Button} from 'reactstrap'
 import quiz from '../../quiz.json';
-
+import classnames from 'classnames';
 class Quiz extends Component {
   constructor (props){
     super(props);
@@ -17,7 +17,6 @@ class Quiz extends Component {
         score: 0,
         correctAnswers: 0,
         wrongAnswers: 0,
-        hints: 5,
         fiftyFifty: 1,
         usedFiftyFifty: false,
         nextButtonDisabled: false,
@@ -79,7 +78,52 @@ class Quiz extends Component {
       }
     });
   }
+  
+  handleBtnNext = () => {
+    if (this.state.nextQ !== undefined) {
+      this.setState(prevState => ({
+        currentQIndex: prevState.currentQIndex + 1
+      }), () => {
+        this.showquiz(this.state.state, this.state.currentQ, this.state.nextQ, this.state.previousQ);
+      });
+    }
+  };
+  handleBtnPrev = () => {
+    if (this.state.previousQ !== undefined) {
+      this.setState(prevState => ({
+        currentQIndex: prevState.currentQIndex - 1
+      }), () => {
+        this.showquiz(this.state.state, this.state.currentQ, this.state.nextQ, this.state.previousQ);
+      });
+    }
+  };
+  handleQuit = () => {
+    if (window.confirm('Are you sure you want to quit?')) {
+      this.props.history.push('/');
+    }
+  };
 
+  handleClick = (e) => {
+    switch (e.target.id) {
+      case 'next':
+        this.handleBtnNext();
+        break;
+
+      case 'previous':
+        this.handleBtnPrev();
+        break;
+
+      case 'quit':
+        this.handleQuit();
+        break;
+
+      default:
+        break;
+    }
+  };
+  handleFiftyFifty = () => {
+    console.log('50 50')
+  }
   render() {
     console.log(quiz)
     const {
@@ -101,26 +145,37 @@ class Quiz extends Component {
                 </h3>
                 <div className="panel-body">
                   <p>Time remain 0:15  </p>
-                  <p>50/50</p>
+                  <span onClick={this.handleFiftyFifty}>
+                    {fiftyFifty} (50/50)
+                  </span>
                   <p>+10 sec</p>
+                  <p>
+                    ({currentQIndex + 1} of {numberOfQ})
+                  </p>
                   <div>
                     <p>{currentQ.question}</p>
                     <button className={'option'} onClick={this.handleOptClick}>{currentQ.option1}</button>
                     <button className={'option'} onClick={this.handleOptClick}>{currentQ.option2}</button>
                     <button className={'option'} onClick={this.handleOptClick}>{currentQ.option3}</button>
-                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option3}</button>
+                    <button className={'option'} onClick={this.handleOptClick}>{currentQ.option4}</button>
                   </div>
-                <div>
-                  <Button id="previous">
-                    Previous
-                  </Button>
-                  <Button id="next">
-                    Next
-                  </Button>
-                  <Button className={'btn btn-danger ml-2'} id="quit">
-                    Quit
-                  </Button>
-                </div>
+                  <div>
+                    <button
+                      className={classnames('', {'disable': this.state.previousButtonDisabled})}
+                      id="previous"
+                      onClick={this.handleClick}>
+                      Previous
+                    </button>
+                    <button
+                      className={classnames('', {'disable': this.state.nextButtonDisabled})}
+                      id="next"
+                      onClick={this.handleClick}>
+                      Next
+                    </button>
+                    <button id="quit" onClick={this.handleClick}>
+                      Quit
+                    </button>
+                  </div>
                 </div>
               </div>
             </Col>
