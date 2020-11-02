@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row, Col, Container,
   Card, CardText, CardBody,
@@ -7,7 +7,7 @@ import {
 import quiz from '../../quiz.json';
 import classnames from 'classnames';
 class Quiz extends Component {
-  constructor (props){
+  constructor(props) {
     super(props);
     this.state = {
       quiz,
@@ -27,27 +27,29 @@ class Quiz extends Component {
       previousButtonDisabled: true,
       previousRandomNumbers: [],
       addTime: 0,
-      time: {}
+      time: {},
+      countDownTime: 0
     };
     this.interval = null;
+    this.timeAdded = false
   }
-  componentDidMount () {
+  componentDidMount() {
     const { quiz, currentQ, nextQ, previousQ } = this.state;
     this.showquiz(quiz, currentQ, nextQ, previousQ);
     this.timer();
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.interval);
   }
   showquiz = (quiz = this.state.quiz, currentQ, nextQ, previousQ) => {
-    let {currentQIndex} = this.state;
+    let { currentQIndex } = this.state;
 
     if (this.state.quiz !== null || this.state.quiz !== '') {
       quiz = this.state.quiz;
       currentQ = quiz[currentQIndex];
-      nextQ = quiz[currentQIndex +1];
-      previousQ = quiz[currentQIndex -1];
+      nextQ = quiz[currentQIndex + 1];
+      previousQ = quiz[currentQIndex - 1];
       const answer = currentQ.answer;
       this.setState({
         currentQ,
@@ -63,17 +65,21 @@ class Quiz extends Component {
     }
   };
   handleOptClick = (e) => {
+    this.setState({ countDownTime: Date.now() + 16000 })
     if (e.target.innerHTML.toLowerCase() === this.state.answer.toLowerCase()) {
       this.correctAnswer();
     } else {
       this.wrongAnswer();
     }
   }
-  handleaddTime= (e) => {
-    this.setState({
-     //TODO set time + 10 sec
-    })
-    console.log('added +10 sec')
+  handleaddTime = (e) => {
+    if (!this.timeAdded) {
+      this.timeAdded = true
+      return this.setState({
+        countDownTime: this.state.countDownTime + 11000
+      })
+    }
+    return
   }
   correctAnswer = () => {
     alert('is correct!');
@@ -176,13 +182,13 @@ class Quiz extends Component {
         if (randomNumber !== indexOfAnswer) {
           if (randomNumbers.length < 2 && !randomNumbers.includes(randomNumber) && !randomNumbers.includes(indexOfAnswer)) {
             randomNumbers.push(randomNumber);
-            count ++;
+            count++;
           } else {
             while (true) {
               const newRandomNumber = Math.round(Math.random() * 3);
               if (!randomNumbers.includes(newRandomNumber) && newRandomNumber !== indexOfAnswer) {
                 randomNumbers.push(newRandomNumber);
-                count ++;
+                count++;
                 break;
               }
             }
@@ -202,10 +208,10 @@ class Quiz extends Component {
   }
 
   timer = () => {
-    const countDownTime = Date.now() + 16000;
+    this.setState({ countDownTime: Date.now() + 16000 })
     this.interval = setInterval(() => {
       const now = new Date();
-      const distance = countDownTime - now;
+      const distance = this.state.countDownTime - now;
 
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -253,7 +259,7 @@ class Quiz extends Component {
     }, 1000);
   }
   render() {
-    console.log(quiz)
+    // console.log(quiz)
     const {
       currentQ,
       fiftyFifty,
@@ -261,7 +267,7 @@ class Quiz extends Component {
       currentQIndex,
       time
     } = this.state;
-    return(
+    return (
       <>
         <Container>
           <Row className={'justify-content-center '}>
@@ -287,8 +293,8 @@ class Quiz extends Component {
                       <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option2}</Button>
                     </Col>
                     <Col>
-                    <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option3}</Button>
-                    <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option4}</Button>
+                      <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option3}</Button>
+                      <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option4}</Button>
                     </Col>
                   </CardBody>
                   <Col md={4} className={'offset-4 justify-content-center'}>
@@ -303,16 +309,16 @@ class Quiz extends Component {
                   </Col>
                   <div>
 
-                </div>
+                  </div>
                   <div className={'mt-3 d-flex justify-content-end'}>
                     <Button
-                      className={classnames('', 'btn mr-2', {'disable': this.state.previousButtonDisabled})}
+                      className={classnames('', 'btn mr-2', { 'disable': this.state.previousButtonDisabled })}
                       id="previous"
                       onClick={this.handleClick}>
                       Previous
                     </Button>
                     <Button
-                      className={classnames('', 'btn green mr-2', {'disable': this.state.nextButtonDisabled})}
+                      className={classnames('', 'btn green mr-2', { 'disable': this.state.nextButtonDisabled })}
                       id="next"
                       onClick={this.handleClick}>
                       Next
