@@ -5,8 +5,8 @@ import {Row, Col,Container,
 import {Link} from 'react-router-dom';
 
 const Home = () => (
-  <Container>
-    <Row className="d-flex justify-content-center mt-3 ">
+  <Container className={'mt-2 '}>
+    <Row className="d-flex justify-content-center">
       <Col md={'8'} offset={'2'} className={'text-center'}>
         <Card className={'bg-light p-3'}>
           <CardTitle><h3>Jayway Quiz Test</h3></CardTitle>

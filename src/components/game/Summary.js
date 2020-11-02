@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardTitle, Col, Container, Row } from 'reactstrap'
+import { Card, CardBody, Table, CardTitle, Col, Container, Row } from 'reactstrap'
 
 class Summary extends Component {
   constructor (props) {
@@ -11,7 +11,8 @@ class Summary extends Component {
       numberOfAnsweredQ: 0,
       correctAnswers: 0,
       wrongAnswers: 0,
-      fiftyFiftyUsed: 0
+      fiftyFiftyUsed: 0,
+      timeAdded: 0
     };
   }
 
@@ -31,53 +32,79 @@ class Summary extends Component {
 
   render () {
     const { state } = this.props.location;
-    let stats, remark;
+    let stats, result;
     const userScore = this.state.score;
 
-    if (userScore <= 60 ) {
-      remark = 'You need more practice!';
+    if (userScore <= 50 ) {
+      result =  <div className={'text-danger'}>Better luck next time!</div>;
     } else {
-      remark = 'You\'re an absolute genius!';
+      result = <div className={'text-success'}>Well done!!!</div>;
     }
 
     if (state !== undefined) {
       stats = (
 
         <>
-          <Container>
+          <Container className={'mt-2'}>
             <Row className={'justify-content-center '}>
               <Col md={'8'}>
                 <Card className={'bg-light'}>
                   <div className="p-4">
-                    <CardTitle className={''}>
-                      <h3>Quiz has ended</h3>
-                    </CardTitle>
                     <CardBody>
-                      <div className="container stats">
-                        <h4>{remark}</h4>
-                        <h2>Your Score: {this.state.score.toFixed(0)}&#37;</h2>
-                        <span className="stat left">Total number of questions: </span>
-                        <span className="right">{this.state.numberOfQ}</span><br />
+                      <h2>{result}</h2>
+                      <h4>Your Score: {this.state.score.toFixed(0)}&#37;</h4>
+                      <Table>
+                        <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Stats</th>
+                          <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td> Total number of questions:
+                            </td>
+                          <td>{this.state.numberOfQ}</td>
 
-                        <span className="stat left">Number of attempted questions: </span>
-                        <span className="right">{this.state.numberOfAnsweredQ}</span><br />
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td>Number of attempted questions:</td>
+                          <td>{this.state.numberOfAnsweredQ}</td>
 
-                        <span className="stat left">Number of Correct Answers: </span>
-                        <span className="right">{this.state.correctAnswers}</span> <br />
+                        </tr>
+                        <tr>
+                          <th scope="row">3</th>
+                          <td>Number of Correct Answers:</td>
+                          <td>{this.state.correctAnswers}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">4</th>
+                          <td>Number of Wrong Answers:</td>
+                          <td>{this.state.wrongAnswers}</td>
 
-                        <span className="stat left">Number of Wrong Answers: </span>
-                        <span className="right">{this.state.wrongAnswers}</span><br />
+                        </tr>
+                        <tr>
+                          <th scope="row">5</th>
+                          <td>50-50 Used:</td>
+                          <td>{this.state.fiftyFiftyUsed}</td>
 
-
-                        <span className="stat left">50-50 Used: </span>
-                        <span className="right">{this.state.fiftyFiftyUsed}</span>
-                      </div>
+                        </tr>
+                        <tr>
+                          <th scope="row">6</th>
+                          <td>+ 10 extra seconds Used:</td>
+                          <td>{this.state.timeAdded}</td>
+                        </tr>
+                        </tbody>
+                      </Table>
                       <section>
-                        <ul>
-                          <li>
-                            <Link to ="/quiz">Play Again</Link>
+                        <ul className={'d-flex justify-content-end'}>
+                          <li className={'btn btn-success '}>
+                            <Link to ="/quiz" className={'text-white'}>Play Again</Link>
                           </li>
-                          <li>
+                          <li className={'btn'}>
                             <Link to ="/">Back to Home</Link>
                           </li>
                         </ul>

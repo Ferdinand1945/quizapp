@@ -26,7 +26,7 @@ class Quiz extends Component {
       nextButtonDisabled: false,
       previousButtonDisabled: true,
       previousRandomNumbers: [],
-      addTime: 0,
+      timeAdded: 0,
       time: {},
       countDownTime: 0
     };
@@ -82,7 +82,7 @@ class Quiz extends Component {
     return
   }
   correctAnswer = () => {
-    alert('is correct!');
+    alert('Your answer is correct!');
     this.setState(prevState => ({
       score: prevState.score + 1,
       correctAnswers: prevState.correctAnswers + 1,
@@ -98,7 +98,7 @@ class Quiz extends Component {
   }
 
   wrongAnswer = () => {
-    alert('answer is wroooong');
+    alert('Your answer is NOT correct.');
     this.setState(prevState => ({
       wrongAnswers: prevState.wrongAnswers + 1,
       currentQIndex: prevState.currentQIndex + 1,
@@ -152,15 +152,12 @@ class Quiz extends Component {
       case 'next':
         this.handleBtnNext();
         break;
-
       case 'previous':
         this.handleBtnPrev();
         break;
-
       case 'quit':
         this.handleQuit();
         break;
-
       default:
         break;
     }
@@ -269,7 +266,7 @@ class Quiz extends Component {
     } = this.state;
     return (
       <>
-        <Container>
+        <Container className={'mt-2'}>
           <Row className={'justify-content-center '}>
             <Col md={'8'}>
               <Card className={'bg-light'}>
@@ -280,30 +277,33 @@ class Quiz extends Component {
                   </h4>
                   </CardTitle>
                   <CardHeader>
-
-                    <p onClick={this.handleFiftyFifty} className={'float-right'}>
+                    <h4>Need help?</h4>
+                    <span className={'btn btn-primary'} onClick={this.handleFiftyFifty}>
                       {fiftyFifty} (50/50)
-                    </p>
-                    <span onClick={this.handleaddTime}>+10 sec</span>
+                    </span>
+                    <span className={'btn btn-primary float-right'} onClick={this.handleaddTime}>Add +10 seconds</span>
                   </CardHeader>
                   <CardBody>
                     <CardText>{currentQ.question}</CardText>
+                    <div className={'d-flex'}>
                     <Col>
                       <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option1}</Button>
                       <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option2}</Button>
-                    </Col>
-                    <Col>
+
                       <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option3}</Button>
                       <Button className={'option m-3 btn-info'} onClick={this.handleOptClick}>{currentQ.option4}</Button>
                     </Col>
+                    </div>
                   </CardBody>
-                  <Col md={4} className={'offset-4 justify-content-center'}>
+                  <Col md={4} className={'offset-4 d-flex justify-content-center'}>
+
                     <div className={'circle'}>
                       <div className={classnames('text-white pt-2 text-center', {
                         'warning': time.distance <= 120000,
                         'invalid': time.distance < 30000
                       })}>
-                        <h4 className={'pt-4'}>{time.minutes}:{time.seconds}</h4>
+                        TIME
+                        <h4 className={'pt-2'}>{time.minutes}:{time.seconds}</h4>
                       </div>
                     </div>
                   </Col>
